@@ -15,7 +15,7 @@ export default function IndexPage() {
   const [isLightOn, setIsLightOn] = useState(false);
 
   const sendWebSocketMessage = (message: string) => {
-    const socket = new WebSocket("ws://localhost:8080");
+    const socket = new WebSocket("wss://7dde-2406-7400-63-f587-4c9d-d5c2-d996-6ac9.ngrok-free.app");
     socket.onopen = () => socket.send(message);
   };
 

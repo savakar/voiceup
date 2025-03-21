@@ -1,7 +1,7 @@
 import DefaultLayout from "@/layouts/default";
 import { useState, useEffect } from "react";
 
-const socket = new WebSocket("ws://localhost:8080");
+const socket = new WebSocket("wss://7dde-2406-7400-63-f587-4c9d-d5c2-d996-6ac9.ngrok-free.app");
 
 export default function ReceiverPage() {
   const [message, setMessage] = useState<string>("");
@@ -25,7 +25,7 @@ export default function ReceiverPage() {
       },
       "language": "en"
     }
-    console.log(speakMessage)
+    
     try {
       const response = await fetch("https://api.cartesia.ai/tts/bytes", {
         method: "POST",
@@ -53,15 +53,6 @@ export default function ReceiverPage() {
     }
   };
 
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const onMessageRecevied = async (msg: string) => {
-      setMessage(msg); 
-      await sendSpeakRequest("Hey Google")
-      await sleep(1000)
-      await sendSpeakRequest(msg)
-  }
-
   useEffect(() => {
     // Unlock autoplay by playing silent audio on first user interaction
     const unlockAudio = () => {
@@ -75,7 +66,7 @@ export default function ReceiverPage() {
     document.addEventListener("click", unlockAudio); // Attach listener
 
     socket.onmessage = async (event) => {
-      //onMessageRecevied(event.data)
+      setMessage(event.data)
       sendSpeakRequest("Hey Google")
       await new Promise(resolve => setTimeout(resolve, 1500));
       sendSpeakRequest(event.data)
