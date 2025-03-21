@@ -80,9 +80,11 @@ export default function ReceiverPage() {
   return (
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-        <div className="inline-block max-w-lg text-center justify-center">
-          <p>Messages:</p>
-          <p>{message}</p>
+        
+        <div className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10 backdrop-blur-sm">
+          <span className="text-sm font-medium bg-gradient-to-r from-blue-400 to-purple-400 text-transparent bg-clip-text">
+            {message}
+          </span>
         </div>
 
        <ListeningAnimation isPlaying={isPlaying} />

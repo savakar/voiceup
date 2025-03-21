@@ -8,7 +8,8 @@ export default function IndexPage() {
   const [speakText, setSpeakText] = useState("");
   const [translateText, setTranslateText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
-  const [selectedLang, setSelectedLang] = useState("es");
+  type Language = "hi" | "kn";
+  const [selectedLang, setSelectedLang] = useState<Language>("hi");
 
   const [isTvOn, setIsTvOn] = useState(false);
   const [isAcOn, setIsAcOn] = useState(false);
@@ -26,17 +27,17 @@ export default function IndexPage() {
 
   const onTvStatusChange = (status: boolean) => {
     setIsTvOn(status)
-    sendWebSocketMessage("Switch "+(status?"on ":"off ")+"TV")
+    sendWebSocketMessage("Switch " + (status ? "on " : "off ") + "TV")
   }
 
   const onAcStatusChange = (status: boolean) => {
     setIsAcOn(status)
-    sendWebSocketMessage("Switch "+(status?"on ":"off ")+"AC")
+    sendWebSocketMessage("Switch " + (status ? "on " : "off ") + "AC")
   }
 
   const onLightStatusChange = (status: boolean) => {
     setIsLightOn(status)
-    sendWebSocketMessage("Switch "+(status?"on ":"off ")+"light")
+    sendWebSocketMessage("Switch " + (status ? "on " : "off ") + "light")
   }
 
   const sendSpeakRequest = async () => {
@@ -86,14 +87,35 @@ export default function IndexPage() {
     }
   };
 
+  const translations = {
+    hi: {
+      text: "आपका नाम क्या है?", // Mock translation for Hindi
+      audio: "/hi.wav", // Mocked Hindi music file
+    },
+    kn: {
+      text: "ನಿಮ್ಮ ಹೆಸರೇನು?", // Mock translation for Kannada
+      audio: "/kn.wav", // Mocked Kannada music file
+    },
+  };
+
   const sendTranslateRequest = async () => {
-    const response = await fetch("https://your-api-url/translate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: translateText, language: selectedLang }),
-    });
-    const data = await response.json();
-    setTranslatedText(data.translatedText);
+    if (!selectedLang) {
+      alert("Please select a language.");
+      return;
+    }
+
+    const translated = translations[selectedLang as Language];
+    //const translated = translations[selectedLang];
+
+    if (translated) {
+      setTranslatedText(translated.text);
+
+      // Play the corresponding audio
+      const audio = new Audio(translated.audio);
+      audio.play();
+    } else {
+      alert("Translation not available.");
+    }
   };
 
   return (
@@ -160,9 +182,8 @@ export default function IndexPage() {
                   placeholder="Type to translate..." />
                 <Select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)}
                   className="mt-2">
-                  <SelectItem key="es">Spanish</SelectItem>
-                  <SelectItem key="fr">French</SelectItem>
-                  <SelectItem key="de">German</SelectItem>
+                  <SelectItem key="hi">Hindi</SelectItem>
+                  <SelectItem key="kn">Kannada</SelectItem>
                 </Select>
                 <Button onPress={sendTranslateRequest} className="mt-2 bg-orange-600 hover:bg-orange-700">
                   Translate
