@@ -5,8 +5,7 @@ import {
   NavbarBrand,
   NavbarContent,
 } from "@heroui/navbar";
-import { Logo } from "@/components/icons";
-import { RiArrowRightLine } from "react-icons/ri"
+import { RiMic2AiFill } from "react-icons/ri"
 
 export const Navbar = () => {
   return (
@@ -18,7 +17,7 @@ export const Navbar = () => {
             color="foreground"
             href="/"
           >
-            <RiArrowRightLine className="text-lg" />
+            <RiMic2AiFill className="text-lg" />
             <p className="font-bold text-inherit">Speechless</p>
           </Link>
         </NavbarBrand>
