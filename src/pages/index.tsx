@@ -180,7 +180,7 @@ export default function IndexPage() {
               <CardBody>
                 <Textarea value={translateText} onChange={(e) => setTranslateText(e.target.value)}
                   placeholder="Type to translate..." />
-                <Select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value)}
+                <Select value={selectedLang} onChange={(e) => setSelectedLang(e.target.value as Language)}
                   className="mt-2">
                   <SelectItem key="hi">Hindi</SelectItem>
                   <SelectItem key="kn">Kannada</SelectItem>
