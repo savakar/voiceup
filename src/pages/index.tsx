@@ -22,7 +22,7 @@ export default function IndexPage() {
 
   const onVolumeAdjust = (value: number | number[]) => {
     const sliderValue = Array.isArray(value) ? value[0] : value;
-    sendWebSocketMessage("Set volume to " + sliderValue);
+    sendWebSocketMessage("Set volume to " + sliderValue+" percent");
   }
 
   const onTvStatusChange = (status: boolean) => {
