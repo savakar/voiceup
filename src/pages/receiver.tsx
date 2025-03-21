@@ -1,3 +1,4 @@
+import ListeningAnimation from "@/components/ListeningAnimation";
 import DefaultLayout from "@/layouts/default";
 import { useState, useEffect } from "react";
 
@@ -5,6 +6,7 @@ const socket = new WebSocket("wss://7dde-2406-7400-63-f587-4c9d-d5c2-d996-6ac9.n
 
 export default function ReceiverPage() {
   const [message, setMessage] = useState<string>("");
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const sendSpeakRequest = async (speakMessage: string) => {
     const requestData = {
@@ -25,7 +27,7 @@ export default function ReceiverPage() {
       },
       "language": "en"
     }
-    
+
     try {
       const response = await fetch("https://api.cartesia.ai/tts/bytes", {
         method: "POST",
@@ -47,7 +49,9 @@ export default function ReceiverPage() {
 
       // Create and play audio
       const audio = new Audio(audioUrl);
-      audio.play();
+      setIsPlaying(true)
+      await audio.play();
+      setIsPlaying(false)
     } catch (error) {
       console.error("Error fetching audio:", error);
     }
@@ -57,10 +61,10 @@ export default function ReceiverPage() {
     // Unlock autoplay by playing silent audio on first user interaction
     const unlockAudio = () => {
       console.log("unlock")
-        const audio = new Audio();
-        audio.muted = true;
-        audio.play().catch(() => {}); // Ensure no errors
-        document.removeEventListener("click", unlockAudio);
+      const audio = new Audio();
+      audio.muted = true;
+      audio.play().catch(() => { }); // Ensure no errors
+      document.removeEventListener("click", unlockAudio);
     };
 
     document.addEventListener("click", unlockAudio); // Attach listener
@@ -80,6 +84,9 @@ export default function ReceiverPage() {
           <p>Messages:</p>
           <p>{message}</p>
         </div>
+
+       <ListeningAnimation isPlaying={isPlaying} />
+
       </section>
     </DefaultLayout>
   );
